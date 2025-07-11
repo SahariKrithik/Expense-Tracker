@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poiret+One&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="./style/style.css">
+
+</head>
+<body>
+    <!--Title of the page-->
+    <section id="title" class="poiret-one-regular">
+        <h1>Expense Tracker</h1>
+    </section>
+
+    <!--Form section of the page to get input from the user -  date, sdescription, category, and samount-->
+    <section id="form">
+        <form id="expense-income-form">
+            <fieldset>
+                <!--Description-->
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description"> 
+                <span class="error" id="description-error"></span>
+                <br />
+
+                <!--Amount-->
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount">
+                <span class="error" id="amount-error"></span>
+                <br />
+
+                <!--Categories-->
+                <label for="category">Category:</label>
+                    <select name="category" id="category">
+                            <option disabled selected>Select Category</option>
+                            <option value="Food">Food</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Transportation">Transportation</option>
+                            <option value="Other">Other</option>
+                            <option value="custom">Custom</option>
+                    </select>
+                    <span class="error" id="category-error"></span>
+                    <!--Enable user to type custom input and keep it hidden until user selects 'custom'-->
+                    <div id="category-container" style="display: none;">
+                        <label for="custom-category">Enter Custom Category Name:</label>
+                        <input type="text" id="custom-category" name="custom-category">
+                        <span class="error" id="custom-category-error"></span>
+                    </div>
+                <br />
+
+                <!--Date-->
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date">
+                <span class="error" id="date-error"></span>
+                <br />
+
+                <!--Income/Expense-->
+                <label for="type">Select Type:</label>
+                <input type="radio" id="income" name="type" value="income">
+                <label for="income">Income</label>
+
+                <input type="radio" id="expense" name="type" value="expense">
+                <label for="expense">Expense</label>
+
+                <span class="error" id="type-error"></span>
+                <br />
+
+                <button type="submit" disabled>Add Expense</button>
+            </fieldset>
+        </form>
+
+    </section>
+
+    <!--To display-->
+    <section id="transactions">
+        <fieldset>
+            <h2 class="poiret-one-regular">Transactions</h2>
+
+            <!--Filters-->
+            <section id="filter">
+                <label for="category-filtor"><em>Filter By Category</em></label>
+                    <select id="category-filter">
+                        <option value="all">Show All</option>
+                        <!-- options will be here during runtime -->
+                    </select>
+            </section>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody id="transactions-body">
+
+                </tbody>
+            </table>
+        </fieldset>
+    </section>
+
+    <!--Display Summary-->
+    <section id="summary">
+        <fieldset>
+            <h2 class="poiret-one-regular">Summary</h2>
+                <p>Total Income: <span id="total-income">0</span></p>
+                <p>Total Expense: <span id="total-expense">0</span></p>
+                <p>Balance: <span id="total-balance">0</span></p>
+        </fieldset>
+    </section>
+
+    <!--js-->
+    <script src="./script.js">
+
+    </script>
+</body>
+</html>
