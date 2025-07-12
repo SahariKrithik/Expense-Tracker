@@ -20,17 +20,24 @@ document.addEventListener("DOMContentLoaded",  () =>{
     let totalIncomeSpan= document.getElementById("total-income");
     let totalBalanceSpan= document.getElementById("total-balance");
 
+    // variable to destroy existing instance of pie-chart in the canvas
+    let pieChartInstance = null; // initialise it with null
+
     //local storage setup
     let transactions = [];
     const dataStored = localStorage.getItem("transactions");
+    
+    //fetching from local storage
     if(dataStored)
     {
         transactions = JSON.parse(dataStored); //converting from json to js
         totalIncome = 0; 
         totalExpense = 0; 
         transactions.forEach(transaction => {
-            displayTransactions(transaction);
+            displayTransactions(transaction); 
         });
+
+        pieChart(transactions);  // if data exists chart is plotted
     }
 
     //displayTransaction function
@@ -68,6 +75,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
         totalExpenseSpan.textContent = totalExpense.toFixed(2);
         totalBalanceSpan.textContent = balance.toFixed(2);
 
+        //deletion of row
         const deleteButton = row.querySelector(".delete-button");
         deleteButton.addEventListener("click",()=>{
             const transactionId = Number(row.getAttribute("data-id"));
@@ -94,9 +102,11 @@ document.addEventListener("DOMContentLoaded",  () =>{
             localStorage.setItem("transactions",JSON.stringify(transactions)); // converting from js to string
 
             row.remove();
+            pieChart(transactions); // after removing data chart is plotted
         });
     }
 
+    // function to update category filter options
     function updateCategoryFilterOptions() {
     const filterSelect = document.getElementById("category-filter");
     const usedCategories = [...new Set(transactions.map(t => t.category))];
@@ -128,6 +138,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
 
 
     // function to validate form
+
     function validateForm(){
         let isValid= true;
 
@@ -191,7 +202,68 @@ document.addEventListener("DOMContentLoaded",  () =>{
     }
 
 
+    // chart function
+
+  
+
+    function pieChart(transactions){
+        const expenseByCategory = {}; // object to hold values from categories
+
+        transactions.forEach(transaction => {
+            if(transaction.type === "expense"){
+                if(!expenseByCategory[transaction.category]){ // if the category has not been added to the object yet then...
+                    expenseByCategory[transaction.category] = 0;
+                } 
+                expenseByCategory[transaction.category] += transaction.amount;
+            }
+        });
+
+        const categoryNames = Object.keys(expenseByCategory); // fetching labels - (keys) from the object to plot chart
+        const categoryValues = Object.values(expenseByCategory); // fetching data - (values) from the object to plot chart
+
+        const ctx = document.getElementById('expense-pie-chart').getContext('2d');
+
+         if(pieChartInstance){ //check if chart already exists 
+            pieChartInstance.destroy(); 
+        }
+
+        pieChartInstance = new Chart(ctx,{ 
+            type: 'pie',
+            data: {
+                labels: categoryNames,
+                datasets:[{
+                    label: "Expense By Categories",
+                    data:categoryValues,
+                    backgroundColor: [
+
+                        '#FFEC21', '#378AFF','#FFA32F','#F54F52','#93F03B','#9552EA','#FF00FE'
+                ]
+                }]
+            },
+
+            options: {
+                responsive:true,
+                plugins:{
+                    legend: {
+                        position: 'bottom',
+                        align:'start',
+                        labels: {
+                            boxWidth: 20,
+                            padding: 10,
+                            usePointStyle: true,
+                            font:{
+                                size: 14,
+                            }
+                        }
+
+                    }
+                }
+            }   
+        });
+    }
+
     // submit listener
+
     form.addEventListener("submit",(event)=>{
         event.preventDefault();
 
@@ -241,6 +313,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
         localStorage.setItem("transactions", JSON.stringify(transactions));
 
         displayTransactions(transaction);
+        pieChart(transactions); // after rows are added chart is plotted
 
         //onclick submit reset 
         form.reset();

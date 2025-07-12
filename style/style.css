@@ -15,3 +15,9 @@ body{
   display: none;
 }
 
+#expense-pie-chart{
+  height: 300px;
+  width: 300px;
+  margin: auto;
+  display: block;
+}
