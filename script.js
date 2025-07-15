@@ -314,7 +314,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
         }
 
         const description = descriptionInput.value;
-        const amount= parseFloat(amountInput.value); // Converting to floating point number from string
+        const amount= parseFloat(amountInput.value); // converting to float from string
         const date=dateInput.value;
 
         //checking if income or expense is selected
@@ -422,5 +422,24 @@ document.addEventListener("DOMContentLoaded",  () =>{
         // checking for update of value dynamically and running the validation code
         input.addEventListener("input",validateForm); 
         input.addEventListener("change", validateForm);
+    });
+
+    //export transactions
+    document.getElementById("export-button").addEventListener("click",()=>{
+        const transactionsJSON = JSON.stringify(transactions); // converting the transactions array into JSON text
+
+        const downloadDataURL = "data:text/json;charset=utf-8," + encodeURIComponent(transactionsJSON); // data url
+
+        const temporaryDownloadLink = document.createElement('a'); // temporary anchor tag to download
+
+        temporaryDownloadLink.setAttribute("href", downloadDataURL); // referencing data url
+
+        temporaryDownloadLink.setAttribute("download", "My_transactions.json");
+
+        document.body.appendChild(temporaryDownloadLink); //Add the link to the DOM
+
+        temporaryDownloadLink.click(); // downloading file on click
+
+        document.body.removeChild(temporaryDownloadLink); // clean link post download from DOM
     });
 });
