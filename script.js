@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
     const expenseButton= document.getElementById("expense");
     const submitButton= document.querySelector("button[type='submit']");
     submitButton.disabled = true;
+    
 
     //expense calculation setup
     let totalExpense= 0;
@@ -23,6 +24,9 @@ document.addEventListener("DOMContentLoaded",  () =>{
     // variable to destroy existing instance of pie-chart in the canvas
     let pieChartInstance = null; // initialise it with null
 
+    //editing row
+    let transactionBeingEdited = null; 
+
     //local storage setup
     let transactions = [];
     const dataStored = localStorage.getItem("transactions");
@@ -31,12 +35,12 @@ document.addEventListener("DOMContentLoaded",  () =>{
     if(dataStored)
     {
         transactions = JSON.parse(dataStored); //converting from json to js
-        totalIncome = 0; 
-        totalExpense = 0; 
+
         transactions.forEach(transaction => {
             displayTransactions(transaction); 
         });
 
+        calculateTotals();
         pieChart(transactions);  // if data exists chart is plotted
     }
 
@@ -50,7 +54,10 @@ document.addEventListener("DOMContentLoaded",  () =>{
         <td>${amount.toFixed(2)}</td>
         <td>${category}</td>
         <td>${date}</td>
-        <td><button class="delete-button">Delete</button></td>
+        <td>
+            <button class="edit-button">Edit</button>    
+            <button class="delete-button">Delete</button>
+        </td>
         `;
 
         row.setAttribute("data-amount", amount);
@@ -61,19 +68,6 @@ document.addEventListener("DOMContentLoaded",  () =>{
         tableBody.appendChild(row);
         updateCategoryFilterOptions();
 
-
-        if (type === "income"){
-            totalIncome += amount;
-        } 
-        else {
-            totalExpense += amount;
-        }
-
-        const balance = (totalIncome-totalExpense);
-
-        totalIncomeSpan.textContent = totalIncome.toFixed(2);
-        totalExpenseSpan.textContent = totalExpense.toFixed(2);
-        totalBalanceSpan.textContent = balance.toFixed(2);
 
         //deletion of row
         const deleteButton = row.querySelector(".delete-button");
@@ -86,23 +80,48 @@ document.addEventListener("DOMContentLoaded",  () =>{
                 return;
             }
 
-            if(transactionToDelete.type === "income"){
-                totalIncome -= transactionToDelete.amount;
-            } 
-            else{
-                totalExpense -= transactionToDelete.amount;
-            }
-
-            const newBalance = totalIncome - totalExpense;
-            totalIncomeSpan.textContent = totalIncome.toFixed(2);
-            totalExpenseSpan.textContent = totalExpense.toFixed(2);
-            totalBalanceSpan.textContent = newBalance.toFixed(2);
-
+        
             transactions = transactions.filter(t => t.id !== transactionId);
             localStorage.setItem("transactions",JSON.stringify(transactions)); // converting from js to string
 
             row.remove();
+            calculateTotals();
             pieChart(transactions); // after removing data chart is plotted
+        });
+
+        //editing row
+
+        const editButton = row.querySelector(".edit-button");
+        editButton.addEventListener("click",()=>{
+            transactionBeingEdited = transaction;
+
+            //fill the form with the row values which we want to edit
+            descriptionInput.value=transaction.description;
+            amountInput.value=transaction.amount;
+            dateInput.value=transaction.date;
+            categoryInput.value=transaction.category;
+
+            //handling of "type"
+            if(transaction.type === "income"){
+                incomeButton.checked=true;
+                submitButton.textContent="Update Income";
+            }
+            else{
+                expenseButton.checked=true;
+                submitButton.textContent="Update Expense";
+            }
+
+            //handling category
+            if (categoryInput.value === transaction.category) {
+                categoryContainer.style.display = "none";  // if the category exists in dropdown dont show custom category
+            }
+            else{
+                categoryInput.value = "custom";
+                customCategoryInput.value=transaction.category;
+                categoryContainer.style.display = "none"; // show custom category 
+            }
+
+            submitButton.disabled=false; // enable the submitButton for editing
         });
     }
 
@@ -134,6 +153,28 @@ document.addEventListener("DOMContentLoaded",  () =>{
             }
         });
     });
+
+    //function to calculate total values
+
+    function calculateTotals(){
+        totalIncome=0;
+        totalExpense=0;
+
+        transactions.forEach(t=>{
+            if(t.type==="income"){
+                totalIncome+=t.amount;
+            }
+            else{
+                totalExpense+=t.amount;
+            }
+        });
+
+        const balance= totalIncome-totalExpense;
+
+        totalIncomeSpan.textContent = totalIncome.toFixed(2);
+        totalExpenseSpan.textContent = totalExpense.toFixed(2);
+        totalBalanceSpan.textContent = balance.toFixed(2);
+    }
 
 
 
@@ -297,23 +338,56 @@ document.addEventListener("DOMContentLoaded",  () =>{
         else{
         category = categoryInput.value;
         }
+        
+        if(transactionBeingEdited){
+            //editing row
 
-        // creating the row based on user inputs and adding it to the table
-        const transactionId = Date.now(); // generate a unique ID
-        const transaction = {
-            id: transactionId,
-            description,
-            amount,
-            category,
-            date,
-            type
-        };
+            const index=transactions.findIndex(t=>t.id===transactionBeingEdited.id) //locating the index of transaction in the transactions array
+
+            transactions[index]={
+                id: transactionBeingEdited.id, // id same so no new row is added but edited
+                description,
+                amount,
+                category,
+                date,
+                type
+            };
+
+            localStorage.setItem("transactions", JSON.stringify(transactions)); // saving to local storage
+
+            document.getElementById("transactions-body").innerHTML=""; // removing the entire table from html
+
+            transactions.forEach(displayTransactions); // replotting table entirely to html 
+
+
+            pieChart(transactions); // replotting pie-chart
+            calculateTotals();
+
+            // reset edit mode
+            transactionBeingEdited = null;
+            submitButton.textContent = "Add Expense";
+        }
+        else{
+            //adding row
+
+            // creating the row based on user inputs and adding it to the table
+            const transactionId = Date.now(); // generate a unique ID
+            const transaction = {
+                id: transactionId,
+                description,
+                amount,
+                category,
+                date,
+                type
+            };
 
         transactions.push(transaction);
-        localStorage.setItem("transactions", JSON.stringify(transactions));
+        localStorage.setItem("transactions", JSON.stringify(transactions)); // saving to local storage
 
         displayTransactions(transaction);
         pieChart(transactions); // after rows are added chart is plotted
+        calculateTotals();
+        }
 
         //onclick submit reset 
         form.reset();
