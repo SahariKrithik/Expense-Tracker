@@ -3,6 +3,10 @@
 A simple web-based expense tracker to manage personal finances.  
 Users can add income and expenses, categorize them, and view summaries with a pie chart.
 
+## Live Demo
+
+[Click here to try the Expense Tracker!](https://expense-tracker-seven-chi-11.vercel.app/)
+
 ## Technologies Used
 
 - **HTML**
