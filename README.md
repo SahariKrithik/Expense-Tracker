@@ -5,7 +5,7 @@ Users can add income and expenses, categorize them, and view summaries with a pi
 
 ## Live Demo
 
-[Click here to try the Expense Tracker!](https://expense-tracker-seven-chi-11.vercel.app/)
+<a href="https://expense-tracker-seven-chi-11.vercel.app/" target="_blank">Click here to try the Expense Tracker!</a>
 
 ## Technologies Used
 
