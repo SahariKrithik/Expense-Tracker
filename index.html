@@ -130,17 +130,21 @@
                 <p>Total Income: <span id="total-income">0</span></p>
                 <p>Total Expense: <span id="total-expense">0</span></p>
                 <p>Balance: <span id="total-balance">0</span></p>
-                <button id="export-button">Export Transactions</button>
+                <p>Import File: <input type="file" id="import-file" accept=".json"></p>
+                <p>Export Transactions: <button id="export-button">Export Transactions</button></p>
         </fieldset>
     </section>
 
     <!--Canvas for expense pie chart-->
-    <canvas id="expense-pie-chart" width="200" height="100"></canvas>
-
+    <section>
+        <fieldset>
+            <h2 class="poiret-one-regular">Expense Pie Chart</h2>
+            <canvas id="expense-pie-chart" width="100" height="100"></canvas>
+        </fieldset>
+    </section>
 
     <!--js-->
     <script src="./script.js">
-
     </script>
 </body>
 </html>

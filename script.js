@@ -428,7 +428,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
     document.getElementById("export-button").addEventListener("click",()=>{
         const transactionsJSON = JSON.stringify(transactions); // converting the transactions array into JSON text
 
-        const downloadDataURL = "data:text/json;charset=utf-8," + encodeURIComponent(transactionsJSON); // data url
+        const downloadDataURL = "data:text/json;charset=utf-8," + encodeURIComponent(transactionsJSON); // data url + safety uri component
 
         const temporaryDownloadLink = document.createElement('a'); // temporary anchor tag to download
 
@@ -441,5 +441,48 @@ document.addEventListener("DOMContentLoaded",  () =>{
         temporaryDownloadLink.click(); // downloading file on click
 
         document.body.removeChild(temporaryDownloadLink); // clean link post download from DOM
+    });
+
+    //import transactions
+    document.getElementById("import-file").addEventListener("change",(event)=>{
+        const selectedFile= event.target.files[0]; // only letting user select 1 file - the first file selected
+
+        if(!selectedFile){
+            alert("No file has been selected");
+            return;
+        }
+
+        const fileReader = new FileReader(); // to read file contents as text
+
+        fileReader.onload = function(e){
+            try{
+                const importedData = JSON.parse(e.target.result); // converting json to js (array)
+
+                //checking if data is actually an array 
+                if(!Array.isArray(importedData)){ 
+                    alert("Invalid File Format");
+                    return;
+                }
+
+                transactions=importedData; // saving the imported data array in the current transactions array
+                
+                localStorage.setItem("transactions", JSON.stringify(transactions)); // saving to local storage
+
+                document.getElementById("transactions-body").innerHTML = "";
+
+                transactions.forEach(displayTransactions);
+
+                calculateTotals();
+
+                pieChart(transactions);
+
+                alert("Import successful!");
+
+            } catch(error){
+                alert("Error reading file...");
+            }   
+        };
+        
+        fileReader.readAsText(selectedFile); //this triggers onload when done reading as plain text
     });
 });
