@@ -5,7 +5,16 @@ Users can add income and expenses, categorize them, and view summaries with a pi
 
 ## Live Demo
 
-<a href="https://expense-tracker-seven-chi-11.vercel.app/" target="_blank">Click here to try the Expense Tracker!</a>
+[Try the Expense Tracker (Hosted on Vercel)](https://expense-tracker-seven-chi-11.vercel.app/)
+
+**Note:**  
+GitHub README links open in the **same tab by default**.  
+If you want to open the demo in a **new tab**, use:
+
+- **Ctrl + Click** (Windows/Linux)  
+- **Cmd + Click** (Mac)  
+- Or **Middle-click** the link
+
 
 ## Technologies Used
 
