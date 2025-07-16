@@ -2,7 +2,13 @@ body{
     background-color: blanchedalmond;
 }
 
-
+#title {
+  display: flex;
+  justify-content: center; 
+  align-items: center;      
+  margin-top: 10px;
+  font-size: larger;
+}
 .poiret-one-regular {
   font-family: "Poiret One", sans-serif;
   font-weight: 600;
@@ -20,4 +26,76 @@ body{
   width: 300px;
   margin: auto;
   display: block;
+}
+
+#expense-income-form fieldset{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.table-wrapper{
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-wrapper table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-wrapper th, .table-wrapper td {
+  padding: 8px;
+  text-align: left;
+  font-size: 18px; /* Base font size */
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  #expense-income-form fieldset{
+    flex-direction: column;
+  }
+
+  #expense-income-form fieldset > * {
+    width: 100%;
+  }
+
+  .table-wrapper th,.table-wrapper td {
+    font-size: 14px;
+  }
+
+  #expense-pie-chart{
+    height: 150px;
+    width: 150px;
+    margin: auto;
+    display: block;
+  }
+}
+
+/* TABLET */
+
+@media (max-width: 1024px) and (min-width: 601px) {
+
+  #expense-income-form fieldset {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px; 
+  }
+  #expense-income-form fieldset > * {
+    width: 45%;  
+  }
+  
+  .table-wrapper th, .table-wrapper td {
+    font-size: 16px;
+  }
+
+  #expense-pie-chart{
+    height: 200px;
+    width: 200px;
+    margin: auto;
+    display: block;
+  }
 }
