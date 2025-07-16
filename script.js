@@ -49,9 +49,12 @@ document.addEventListener("DOMContentLoaded",  () =>{
         const { id,description, amount, category, date, type} = transaction;
 
         const row = document.createElement("tr");
+
+        //LINE 56 - to add color to amount based on type
+
         row.innerHTML = `
         <td>${description}</td>
-        <td>${amount.toFixed(2)}</td>
+        <td><span class="${type}-amount">${amount.toFixed(2)}</span></td> 
         <td>${category}</td>
         <td>${date}</td>
         <td>
@@ -277,7 +280,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
                     data:categoryValues,
                     backgroundColor: [
 
-                        '#FFEC21', '#378AFF','#FFA32F','#F54F52','#93F03B','#9552EA','#FF00FE'
+                        '#f4a261', '#e9c46a','#e76f51','#d4a373','#fcd5ce','#9552EA','#f6bd60'
                 ]
                 }]
             },
