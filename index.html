@@ -71,21 +71,24 @@
                 <br />
 
                 <!--Income/Expense-->
-                <label>Select Type:</label>
+<p>Select Type:</p>
 
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" id="income" name="type" value="income">
-                        Income
-                    </label>
+<div class="custom-radio-group">
+    <label class="custom-radio-option">
+        Income
+        <input type="radio" id="income" name="type" value="income">
+        <span class="custom-radio-button"></span>
+    </label>
 
-                    <label class="radio-option">
-                        <input type="radio" id="expense" name="type" value="expense">
-                        Expense
-                    </label>
-                </div>
+    <label class="custom-radio-option">
+        Expense
+        <input type="radio" id="expense" name="type" value="expense">
+        <span class="custom-radio-button"></span>
+    </label>
+</div>
 
-                <span class="error" id="type-error"></span>
+<span class="error" id="type-error"></span>
+
                 <br />
 
                 <button type="submit" class="submit-button" disabled>Add Expense</button>
