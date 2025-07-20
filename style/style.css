@@ -281,6 +281,18 @@ input[type="file"]::file-selector-button:hover {
     padding: 10px;   
   }
 
+
+  #expense-income-form {
+    display: flex;
+    justify-content: center;
+  }
+
+  #expense-income-form fieldset {
+    width: 100%;
+    max-width: 400px; 
+  }
+
+
   .card {
     padding: 15px;     
     margin-bottom: 15px; 

@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
     }
 
     // function to update category filter options
+
     function updateCategoryFilterOptions() {
     const filterSelect = document.getElementById("category-filter");
     const usedCategories = [...new Set(transactions.map(t => t.category))];
@@ -247,9 +248,7 @@ document.addEventListener("DOMContentLoaded",  () =>{
 
 
     // chart function
-
-  
-
+    
     function pieChart(transactions){
         const expenseByCategory = {}; // object to hold values from categories
 
