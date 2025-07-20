@@ -235,6 +235,7 @@ input[type="file"]::file-selector-button:hover {
 .custom-radio-group {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
 }
 
@@ -310,7 +311,7 @@ input[type="file"]::file-selector-button:hover {
 
   #expense-income-form label {
     width: 100%;
-    text-align: center;    /* Center the label text */
+    text-align: center;    
   }
 
   #expense-income-form input,
@@ -332,7 +333,7 @@ input[type="file"]::file-selector-button:hover {
   }
 
   .error {
-    text-align: center;    /* Center the error messages */
+    text-align: center;    
   }
 
   .table-wrapper th, .table-wrapper td {
